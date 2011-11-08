@@ -3,12 +3,19 @@ require 'spec_helper'
 describe "World" do
   
   before(:each) do
-    @world = World.new
+    @world = World.new(3,3)
   end
   
-  it "should store a list of its cells" do
-    cell1 = Cell.new(1, 2, @world)
-    cell2 = Cell.new(3, 2, @world)
-    @world.cells.should == [cell1, cell2]
+  it "should be able to get and set its cells" do
+    cell = @world.cells[1][1]
+    cell.live = true
+    @world.cells[1][1].live.should === true
   end
+  
+  it "should have an index method" do
+    cell = @world.cells[1][1]
+    cell.x.should == 1
+    cell.y.should == 1
+  end
+
 end
