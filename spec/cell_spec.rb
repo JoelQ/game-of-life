@@ -53,6 +53,24 @@ describe "Cell" do
       @world.cells[0][2].live!
       corner_cell.neighbors.should == 3 
     end
+    
+    it "should get live neighbors with both negative and too big coordinates (NE)" do
+      corner_cell = @world.cells[2][0]
+      corner_cell.live!
+      @world.cells[0][0].live!
+      @world.cells[2][2].live!
+      @world.cells[0][2].live!
+      corner_cell.neighbors.should == 3
+    end
+    
+    it "should get live neighbors with both negative and too big coordinates (SW)" do
+      corner_cell = @world.cells[0][2]
+      corner_cell.live!
+      @world.cells[0][0].live!
+      @world.cells[2][2].live!
+      @world.cells[2][0].live!
+      corner_cell.neighbors.should == 3
+    end
   end  
 
   

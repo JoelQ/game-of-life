@@ -10,13 +10,13 @@ describe "game of life rules" do
   describe "Rule 1: Any live cell with fewer than two live neighbours dies, as if caused by under-population." do
     it "should follow rule 1 with no neighbors" do
       @world.tick!
-      @world.live_cells.should_not include(@cell)
+      @cell.live?.should == false
     end
     
     it "should follow rule 1 with one neighbor" do
       @world.cells[0][0].live!
       @world.tick!
-      @world.live_cells.should_not include(@cell)
+      @cell.live?.should == false
     end
   end
   
@@ -46,7 +46,7 @@ describe "game of life rules" do
       @world.cells[0][2].live!
       @world.cells[1][0].live!
       @world.tick!
-      @world.cells.should_not include(@cell)
+      @cell.live?.should == false
     end
     
     it "should follow rule 3 with 5 neighbor cells" do
@@ -56,7 +56,7 @@ describe "game of life rules" do
       @world.cells[1][0].live!
       @world.cells[1][2].live!
       @world.tick!
-      @world.cells.should_not include(@cell)
+      @cell.live?.should == false
     end
     
     it "should follow rule 3 with 6 neighbor cells" do
@@ -68,7 +68,7 @@ describe "game of life rules" do
       @world.cells[1][2].live!
       @world.cells[2][0].live!
       @world.tick!
-      @world.cells.should_not include(@cell)
+      @cell.live?.should == false
     end
     
     it "should follow rule 3 with 7 neighbor cells" do
@@ -81,7 +81,7 @@ describe "game of life rules" do
       @world.cells[2][0].live!
       @world.cells[2][1].live!
       @world.tick!
-      @world.cells.should_not include(@cell)
+      @cell.live?.should == false
     end
     
     it "should follow rule 3 with 8 neighbor cells" do
@@ -95,11 +95,21 @@ describe "game of life rules" do
       @world.cells[2][1].live!
       @world.cells[2][2].live!
       @world.tick!
-      @world.cells.should_not include(@cell)
+      @cell.live?.should == false
     end
   end
   
   describe "Rule 4: Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction." do
+    it "should generate a live cell if it has 3 live neighbors" do
+      puts '#4'
+      @cell.dead!
+      @world.cells[0][0].live!
+      @world.cells[0][2].live!
+      @world.cells[2][1].live!
+      @world.tick!
+      @cell.live?.should == true
+    end
+
     
   end
   

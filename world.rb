@@ -4,7 +4,7 @@ class World
   # 0,1  1,1  2,1
   # 0,2, 1,2  2,2
   
-  attr_accessor :cells, :live_cells, :width, :height
+  attr_accessor :cells, :width, :height
   
   def initialize(width=20, height=20)
     @width = width
@@ -12,7 +12,6 @@ class World
     
     # Create a nil 2d array (len x wid)
     @cells = Array.new(width) {Array.new(height)}
-    @live_cells = []
     
     # Fill the array with cells
     x = 0
@@ -24,8 +23,6 @@ class World
   
   def tick!
     tmp_cells = self.cells
-    @live_cells = []
-    
     self.cells.each do |col|
       col.each do |cell|
         
@@ -33,10 +30,13 @@ class World
           if cell.neighbors < 2 # Rule 1
             tmp_cells[cell.x][cell.y].dead!
           elsif (cell.neighbors == 2) || (cell.neighbors == 3) # Rule 2 
-            live_cells.push cell
             tmp_cells[cell.x][cell.y].live!
           elsif cell.neighbors > 3 # Rule 3
             tmp_cells[cell.x][cell.y].dead!
+          end
+        else #cell is dead
+          if cell.neighbors == 3 # Rule 4
+            tmp_cells[cell.x][cell.y].live!
           end
         end
         
@@ -44,6 +44,7 @@ class World
     end
     
     self.cells = tmp_cells
+    puts tmp_cells[1][1].live?
   end
 
   
