@@ -15,6 +15,10 @@ describe "Cell" do
     it "should have a y coordinate" do
       @cell.y.should == 1
     end
+    
+    it "should have a next_gen attribute" do
+      @cell.next_gen.should == false
+    end
 
     it "should have a world" do
       @cell.world.should == @world
@@ -90,6 +94,16 @@ describe "Cell" do
     it "should have a dead! method" do
       @cell.dead!
       @cell.live?.should === false
+    end
+    
+    it "should have a ng_dead! method" do
+      @cell.ng_dead!
+      @cell.next_gen.should == false
+    end
+    
+    it "should have a ng_live! method" do
+      @cell.ng_live!
+      @cell.next_gen.should == true
     end
   end
   

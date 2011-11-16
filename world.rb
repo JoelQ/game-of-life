@@ -22,29 +22,35 @@ class World
   end
   
   def tick!
-    tmp_cells = self.cells
+    
+    # Determine the fate of each cell and store it in the next_gen attribute
     self.cells.each do |col|
       col.each do |cell|
         
         if cell.live?
           if cell.neighbors < 2 # Rule 1
-            tmp_cells[cell.x][cell.y].dead!
+            cell.ng_dead!
           elsif (cell.neighbors == 2) || (cell.neighbors == 3) # Rule 2 
-            tmp_cells[cell.x][cell.y].live!
+            cell.ng_live!
           elsif cell.neighbors > 3 # Rule 3
-            tmp_cells[cell.x][cell.y].dead!
+            cell.ng_dead!
           end
         else #cell is dead
           if cell.neighbors == 3 # Rule 4
-            tmp_cells[cell.x][cell.y].live!
+            cell.ng_live!
           end
         end
-        
+         
       end
     end
     
-    self.cells = tmp_cells
-    puts tmp_cells[1][1].live?
+    # Update all cells to the new state using value stored in next_gen
+    self.cells.each do |col|
+      col.each do |cell|
+        cell.live = cell.next_gen
+      end
+    end
+    
   end
 
   

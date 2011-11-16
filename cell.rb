@@ -1,9 +1,10 @@
 class Cell
-  attr_accessor :x, :y, :live, :world
+  attr_accessor :x, :y, :live, :world, :next_gen
   
   def initialize(world, x=0, y=0)
     @x = x
     @y = y
+    @next_gen = false
     @neighbors = []
     @live = false
     @world = world
@@ -40,5 +41,13 @@ class Cell
   
   def dead!
     @live = false
+  end
+  
+  def ng_live!
+    @next_gen = true
+  end
+  
+  def ng_dead!
+    @next_gen = false
   end
 end

@@ -101,7 +101,6 @@ describe "game of life rules" do
   
   describe "Rule 4: Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction." do
     it "should generate a live cell if it has 3 live neighbors" do
-      puts '#4'
       @cell.dead!
       @world.cells[0][0].live!
       @world.cells[0][2].live!
