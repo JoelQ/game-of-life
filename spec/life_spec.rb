@@ -10,13 +10,13 @@ describe "game of life rules" do
   describe "Rule 1: Any live cell with fewer than two live neighbours dies, as if caused by under-population." do
     it "should follow rule 1 with no neighbors" do
       @world.tick!
-      @world.cells.should_not include(@cell)
+      @world.live_cells.should_not include(@cell)
     end
     
     it "should follow rule 1 with one neighbor" do
       @world.cells[0][0].live!
       @world.tick!
-      @world.cells.should_not include(@cell)
+      @world.live_cells.should_not include(@cell)
     end
   end
   
@@ -26,7 +26,7 @@ describe "game of life rules" do
       @world.cells[0][0].live!
       @world.cells[0][1].live!
       @world.tick!
-      @world.cells.should include(@cell)
+      @cell.live?.should == true
     end
     
     it "should follow rule 2 with three neighbor cells" do
@@ -34,7 +34,7 @@ describe "game of life rules" do
       @world.cells[0][1].live!
       @world.cells[0][2].live!
       @world.tick!
-      @world.cells.should include(@cell)
+      @cell.live?.should == true
     end
   end
   

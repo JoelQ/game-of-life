@@ -1,5 +1,5 @@
 class Cell
-  attr_accessor :x, :y, :live, :neighbors, :world
+  attr_accessor :x, :y, :live, :world
   
   def initialize(world, x=0, y=0)
     @x = x
@@ -8,21 +8,27 @@ class Cell
     @live = false
     @world = world
   end
-  
-  def spawn_relative(x, y)
-    new_x = @x + x
-    new_y = @y + y
-    new_cell = Cell.new(new_x, new_y)
-    set_neighbor(new_cell) if (x.abs == 1) || (y.abs == 1)
+ 
+  def neighbors
+    count = 0
     
-    return new_cell
+    # Force the neighbor check to wrap around instead of checking for non existing cells (overflow)
+    # Note: the coordinate system starts at 0 but the width/height of the world starts at 1
+    #       so a cell at @world.width, @world.height does not exist
+    @x+1 == @world.width ? x_plus_1 = 0 : x_plus_1 = @x+1
+    @y+1 == @world.height ? y_plus_1 = 0 : y_plus_1 = @y+1
+     
+    count += 1 if @world.cells[@x-1][y_plus_1].live?
+    count += 1 if @world.cells[@x-1][@y].live?
+    count += 1 if @world.cells[@x-1][@y-1].live?
+    count += 1 if @world.cells[@x][y_plus_1].live?
+    count += 1 if @world.cells[@x][@y-1].live?
+    count += 1 if @world.cells[x_plus_1][y_plus_1].live?
+    count += 1 if @world.cells[x_plus_1][@y].live?
+    count += 1 if @world.cells[x_plus_1][@y-1].live?
+    
+    count
   end
-  
-  def set_neighbor(cell)
-    neighbors.push cell
-    cell.neighbors.push self
-  end
-  
   
   def live?
     @live
