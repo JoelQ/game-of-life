@@ -32,8 +32,14 @@ Once the world is initialized, you reach the game's main menu:
   * This option lets you create a new world without having to restart the program. The steps are exactly the same as when the program first launches.
 
 * [2] View the current state of the world
-
-Outputs the current state of the world to the screen. You are asked whether you want to see the next generation. This allows you to advance the simulation one generation at a time ad infinitum
+  * Outputs the current state of the world to the screen. You are asked whether you want to see the next generation. This allows you to advance the simulation one generation at a time ad infinitum
 
 
 * [3] View the world after X generations
+  * This allows you to fast-forward X generations into the future and then displays the world.
+  
+* [4] Reset to generation 0
+  * Resets the simulation to its original state
+
+* [5] Exit
+  * Quits the program
