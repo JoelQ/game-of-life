@@ -29,7 +29,7 @@ Once the world is initialized, you reach the game's main menu:
     [5] Exit
     
 * [1] Start a new game
-  *This option lets you create a new world without having to restart the program. The steps are exactly the same as when the program first launches.
+  * This option lets you create a new world without having to restart the program. The steps are exactly the same as when the program first launches.
 
 * [2] View the current state of the world
 
