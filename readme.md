@@ -6,7 +6,15 @@ Conway's Game of Life coded in Ruby using a Test Driven Development approach wit
 
 Core Engine
 -----------
-The core engine implements Conway's 4 rules. It is composed of a World object that contains a 2 dimensional array of of Cell objects. All cells are either alive or dead. A world has the ability to load a new array of cells.
+The core engine implements Conway's 4 rules. 
+
+1. Any live cell with fewer than two live neighbours dies, as if caused by under-population.
+2. Any live cell with two or three live neighbours lives on to the next generation.
+3. Any live cell with more than three live neighbours dies, as if by overcrowding.
+4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+
+
+It is composed of a World object that contains a 2 dimensional array of of Cell objects. All cells are either alive or dead. A world has the ability to load a new array of cells.
 
 Text-Based UI
 -------------
