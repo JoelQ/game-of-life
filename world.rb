@@ -52,6 +52,15 @@ class World
     end
     
   end
-
+  
+  
+  def load_pattern(pattern)
+    #assumes the pattern is valid and fits the dimensions of the world
+    self.cells.each do |col|
+      col.each do |cell|
+        cell.live = pattern[cell.x][cell.y]
+      end
+    end
+  end
   
 end
