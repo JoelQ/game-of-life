@@ -28,13 +28,13 @@ Once the world is initialized, you reach the game's main menu:
     [4] Reset to generation 0
     [5] Exit
     
-### [1] Start a new game
+* [1] Start a new game
 
 This option lets you create a new world without having to restart the program. The steps are exactly the same as when the program first launches.
 
-### [2] View the current state of the world
+* [2] View the current state of the world
 
 Outputs the current state of the world to the screen. You are asked whether you want to see the next generation. This allows you to advance the simulation one generation at a time ad infinitum
 
 
-### [3] View the world after X generations
+* [3] View the world after X generations
