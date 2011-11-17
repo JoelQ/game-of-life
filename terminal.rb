@@ -4,8 +4,7 @@ class Terminal
   LIVE = "*"
   DEAD = "-"
   
-  
-  # ======= Utility functions =======
+  # ======= Pattern and array manipulation
   
   def two_d_to_string
     #assumes that @world is set
@@ -48,14 +47,45 @@ class Terminal
     (/[^#{LIVE}#{DEAD}]/ =~ line).nil? ? true : false
   end
   
+  
+  # ======= Utility functions =======
+  
+  def get_number
+    # gets user input and validates its numericality, user is prompted for input 
+    # => until a valid number is entered
+    num = gets.chop.to_i
+    if num == 0
+      puts "Not a number! Please try again"
+      get_number
+    else
+      return num
+    end
+  end
+  
+  def bool_choice?(message)
+    puts "#{message} [Y/n]"
+    option = gets.chomp
+    option.downcase == "y" ? true : false
+  end
+  
   def advance_world(x)
     x.times do
       @world.tick!
     end
   end
   
+  def next_gen
+    choice = bool_choice?("View next generation?")
+    if choice
+      advance_world(1)
+      view
+    end
+  end
+  
   def random_pattern
     pattern = []
+    puts @world.height
+    puts @world.width
     @world.height.times do
       line = ""
       @world.width.times do
@@ -65,44 +95,6 @@ class Terminal
     end
     puts "- #{pattern} -"
     return pattern
-  end
-  
-  # ======= User Interation Functions =========
-  
-  def init_width
-    puts "Please enter the width of the world"
-    width = gets.chop
-    if width.to_i == 0
-      init_width
-    end
-    width
-  end
-  
-  def init_height
-    puts "Please enter the height of the world"
-    height = gets.chop
-    if height.to_i == 0
-      init_height
-    end
-    height
-  end
-  
-  def init_world
-    width = init_width
-    height = init_height    
-    
-    self.world = World.new(width.to_i, height.to_i)
-    puts "Congratulations! A new blank world (#{width}x#{height}) has been created"
-  end
-  
-  def get_pattern_line
-    line = gets.chomp!.slice(0..(@world.width-1))
-    if valid_pattern?(line)
-      return line
-    else
-      puts "You entered some invalid characters. Please try again"
-      get_pattern_line
-    end
   end
   
   def user_pattern
@@ -116,10 +108,31 @@ class Terminal
     pattern
   end
   
+  def get_pattern_line
+    line = gets.chomp!.slice(0..(@world.width-1))
+    if valid_pattern?(line)
+      return line
+    else
+      puts "You entered some invalid characters. Please try again"
+      get_pattern_line
+    end
+  end
+  
+  # ======= User Interation Functions =========
+  
+  def init_world
+    puts "Please enter the width of the world"
+    width = get_number
+    puts "Please enter the height of the world"
+    height = get_number    
+    
+    self.world = World.new(width.to_i, height.to_i)
+    puts "Congratulations! A new blank world (#{width}x#{height}) has been created"
+  end
+  
   def init_cells
-    puts "Want to use a computer generated pattern? [y/n]"
-    option = gets.chomp
-    option.downcase == "y" ? pattern = random_pattern : pattern = user_pattern
+    choice = bool_choice?("Want to use a computer generated pattern?")
+    choice ? pattern = random_pattern : pattern = user_pattern
     @pattern = pattern_to_a(pattern)
     @world.load_pattern(@pattern)
   end
@@ -135,24 +148,9 @@ class Terminal
   def view
     puts "== VIEWING THE CURRENT STATE OF THE WORLD =="
     output_world
-    puts "View next generation? [Y/n]"
-    option = gets.chomp
-    if option.downcase == "y"
-      advance_world(1)
-      view
-    end
+    next_gen
     menu
-  end
-  
-  def get_number
-    gen = gets.chop
-    if gen.to_i == 0
-      puts "Not a number!"
-      get_gen
-    end
-    gen.to_i
-  end
-  
+  end  
   
   def view_future
     puts "Please enter how many generations fromt the current state you would like to advance the simulateion"
@@ -160,6 +158,7 @@ class Terminal
     advance_world(x)
     puts "== VIEWING THE WORLD #{x} GENRATIONS FROM THE LAST CURRENT STATE =="
     output_world
+    next_gen
     menu
   end
   
