@@ -1,52 +1,45 @@
 class Terminal
-  attr_accessor :world, :pattern
+
+  require_relative 'constants.rb'
+  include Constants
   
-  LIVE = "*"
-  DEAD = "-"
+  attr_accessor :world, :pattern
   
   # ======= Pattern and array manipulation
   
-  def two_d_to_string
-    #assumes that @world is set
-    output = []
-    cells = @world.cells.transpose
-    cells.each do |col|
-      line = ""
-      col.each do |cell|
-        cell.live? ? line << LIVE : line << " "
-      end
-      output << line
-    end
-    return output
-  end
-  
   def output_world
-    #assumes that @world is set
-    
-    data = self.two_d_to_string
+    #assumes that @world is set    
+    data = Pattern.two_d_to_string(@world)
     data.each do |d|
       puts d
     end
-  end
-  
-  def pattern_to_a(pattern)
-    # => recieves a (validated) pattern as input
-    # => ouputs a 2d array of true/false values properly formated for game of life
-    arr = []
-    pattern.each do |line|
-      row = []
-      line.each_char do |char|
-        char == LIVE ? row << true : row << false
-      end
-      arr << row
-    end
-    arr.transpose 
   end
   
   def valid_pattern?(line)
     (/[^#{LIVE}#{DEAD}]/ =~ line).nil? ? true : false
   end
   
+  def user_pattern
+    arr = []
+    puts "Creating the initial pattern"
+    puts "Please input #{@world.width} characters on each line where #{DEAD} represents a dead cell and #{LIVE} represents a live cell"
+    @world.height.times do
+      line = get_pattern_line
+      arr << line
+    end
+    pat = Patern.new(@world.width, @world.height)
+    pat.patern = arr
+  end
+  
+  def get_pattern_line
+    line = gets.chomp!.slice(0..(@world.width-1))
+    if valid_pattern?(line)
+      return line
+    else
+      puts "You entered some invalid characters. Please try again"
+      get_pattern_line
+    end
+  end
   
   # ======= Utility functions =======
   
@@ -81,42 +74,7 @@ class Terminal
       view
     end
   end
-  
-  def random_pattern
-    pattern = []
-    puts @world.height
-    puts @world.width
-    @world.height.times do
-      line = ""
-      @world.width.times do
-        rand(2) == 0 ? line << LIVE : line << DEAD 
-      end
-      pattern << line
-    end
-    puts "- #{pattern} -"
-    return pattern
-  end
-  
-  def user_pattern
-    pattern = []
-    puts "Creating the initial pattern"
-    puts "Please input #{@world.width} characters on each line where #{DEAD} represents a dead cell and #{LIVE} represents a live cell"
-    @world.height.times do
-      line = get_pattern_line
-      pattern << line
-    end
-    pattern
-  end
-  
-  def get_pattern_line
-    line = gets.chomp!.slice(0..(@world.width-1))
-    if valid_pattern?(line)
-      return line
-    else
-      puts "You entered some invalid characters. Please try again"
-      get_pattern_line
-    end
-  end
+
   
   # ======= User Interation Functions =========
   
@@ -132,9 +90,8 @@ class Terminal
   
   def init_cells
     choice = bool_choice?("Want to use a computer generated pattern?")
-    choice ? pattern = random_pattern : pattern = user_pattern
-    @pattern = pattern_to_a(pattern)
-    @world.load_pattern(@pattern)
+    choice ? @pattern = Patern.random(@world.width, @world.height) : @pattern = user_pattern
+    @world.load_pattern(@pattern.to_a)
   end
   
   def new_game
