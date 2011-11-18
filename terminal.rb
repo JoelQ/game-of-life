@@ -90,7 +90,7 @@ class Terminal
   
   def init_cells
     choice = bool_choice?("Want to use a computer generated pattern?")
-    choice ? @pattern = Patern.random(@world.width, @world.height) : @pattern = user_pattern
+    choice ? @pattern = Pattern.random(@world.width, @world.height) : @pattern = user_pattern
     @world.load_pattern(@pattern.to_a)
   end
   
@@ -120,7 +120,7 @@ class Terminal
   end
   
   def reset_game
-    @world.load_pattern(@pattern)
+    @world.load_pattern(@pattern.to_a)
     puts "Game has been reset"
   end
   

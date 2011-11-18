@@ -19,7 +19,7 @@ class Pattern
       width.times do
         rand(2) == 0 ? line << LIVE : line << DEAD 
       end
-      pattern << line
+      arr << line
     end
     pat = Pattern.new(width, height)
     pat.pattern = arr
@@ -40,7 +40,7 @@ class Pattern
     return output
   end
   
-  def pattern_to_a
+  def to_a
     # converts the pattern object into an array of true/false values for the world object
     arr = []
     self.pattern.each do |line|

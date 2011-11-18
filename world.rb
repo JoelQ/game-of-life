@@ -55,6 +55,7 @@ class World
   
   
   def load_pattern(pattern)
+    # takes a 2d-array as input
     #assumes the pattern is valid and fits the dimensions of the world
     self.cells.each do |col|
       col.each do |cell|
